@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>DEPOT ISI ULANG AIR MINUM TIRTA PRAWITOSATI</title>
+  <title>Depot Isi Ulang Air Minum</title>
   <style>
     :root {
       --color-bg: #ffffff;
@@ -404,6 +404,8 @@
       transition: background-color 0.3s ease, transform 0.2s ease;
       user-select: none;
       box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      text-decoration: none;
+      display: inline-block;
     }
     .order-now-button:hover,
     .order-now-button:focus {
@@ -417,7 +419,7 @@
   <header>
     <div class="container">
       <nav role="navigation" aria-label="Main Navigation">
-        <div class="logo" tabindex="0">DEPOT ISI ULANG AIR MINUM TIRTA PRAWITOSATI</div>
+        <div class="logo" tabindex="0">DEPOT ISI ULANG AIR MINUM TIRTA PRAWITOSARI</div>
         <div class="nav-links">
           <a href="#products" tabindex="0">Produk</a>
           <a href="#contact" tabindex="0">Kontak</a>
@@ -455,11 +457,12 @@
 
   <div class="order-now-menu">
     <a 
-      href="https://wa.me/6281329131258?text=Halo%20Depot%20Air%20Minum,%20saya%20ingin%20memesan%20produk%20Anda."
-      target="_blank" 
-      rel="noopener noreferrer"
+      href="#" 
+      id="orderNowButton" 
       class="order-now-button"
       aria-label="Pesan Sekarang via WhatsApp"
+      target="_blank" 
+      rel="noopener noreferrer"
     >
       Pesan Sekarang
     </a>
@@ -484,6 +487,7 @@
     const closeCartBtn = document.getElementById('closeCart');
     const cartItemsEl = document.getElementById('cartItems');
     const cartFooter = document.getElementById('cartFooter');
+    const orderNowButton = document.getElementById('orderNowButton');
 
     function formatPrice(num) {
       return 'Rp' + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -542,11 +546,13 @@
         cart[itemIndex].quantity++;
       }
       updateCartUI();
+      updateOrderNowLink();
     }
 
     function removeFromCart(productId) {
       cart = cart.filter(item => item.id !== productId);
       updateCartUI();
+      updateOrderNowLink();
     }
 
     function updateCartUI() {
@@ -624,8 +630,22 @@
       }
     });
 
+    // Updates the "Pesan Sekarang" button WhatsApp link including quantity of cart items
+    function updateOrderNowLink() {
+      const totalQuantity = cart.reduce((acc, item) => acc + item.quantity, 0);
+      let msg = 'Halo Depot Air Minum, saya ingin memesan produk Anda.';
+      if (totalQuantity > 0) {
+        msg += ` Jumlah pesan: ${totalQuantity}.`;
+      }
+      const encodedMsg = encodeURIComponent(msg);
+      const phoneNumber = '6281329131258';
+      const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMsg}`;
+      orderNowButton.href = whatsappUrl;
+    }
+
     renderProducts();
     updateCartUI();
+    updateOrderNowLink();
   </script>
 </body>
 </html>
